@@ -17,8 +17,7 @@ install.packages("tidyverse","usethis")
 library(tidyverse)
 library(usethis)
 ## these functions load necessary packages into R for subsequent lines.
-f <- file.choose()
-## The file.choose pathway is being left blank, so when the dialog box opens you should navigate to and select "data-wrangling.csv" from your local files
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/data-wrangling.csv"
 d <- read.csv(f, header = TRUE)
 ## this should load the dataset as an object of 213 observations with 23 variables
 d$BSD <- (d$Body_mass_male_mean / d$Body_mass_female_mean)
