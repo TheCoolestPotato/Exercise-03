@@ -1,0 +1,29 @@
+---
+title: "EDA-challenge"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+install.packages("tidyverse","usethis")
+library(tidyverse)
+library(usethis)
+## these functions load necessary packages into R for subsequent lines.
+f <- file.choose()
+## The file.choose pathway is being left blank, so when the dialog box opens you should navigate to and select "data-wrangling.csv" from your local files
+d <- read.csv(f, header = TRUE)
+## this should load the dataset as an object of 213 observations with 23 variables
+d$BSD <- (d$Body_mass_male_mean / d$Body_mass_female_mean)
+d$sex_ratio <- (d$AdultFemale / d$AdultMales)
+d$home_diameter <- (sqrt(((d$HomeRange_km2)/pi))*2)
+d$DI <- (d$DayLength_km / d$home_diameter)
+## these four lines create four new variables which will be used in later steps.
+```
