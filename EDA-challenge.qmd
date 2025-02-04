@@ -25,4 +25,21 @@ d$sex_ratio <- (d$AdultFemale / d$AdultMales)
 d$home_diameter <- (sqrt(((d$HomeRange_km2)/pi))*2)
 d$DI <- (d$DayLength_km / d$home_diameter)
 ## these four lines create four new variables which will be used in later steps.
+ptime_day <- ggplot(data = d, aes(x=Move, y=DayLength_km)) + geom_point(na.rm = TRUE) + labs(title = "Time Spent Moving vs Day Range Length", y= "Day Range", x= "Time Moving")
+ptime_day_family <- ggplot(data = d, aes(x=Move, y=DayLength_km)) + geom_point(na.rm = TRUE) + facet_wrap(~ Family) + labs(title = "Time Spent Moving vs Day Range Length", y= "Day Range", x= "Time Moving")
+##these steps create two plots. One is a single plot, the other generates a set of scatter plots. In each the X axis represents time spent moving and the y axis represents the day range length. Each scatter plot contains data, where available, for individual Families.##
+psize_day <- ggplot(data = d, aes(x=MeanGroupSize, y=DayLength_km)) + geom_point(na.rm = TRUE) + labs(title = "Mean Group Size vs Day Range Length", y= "Group Size", x= "Time Moving")
+psize_day_family <- ggplot(data = d, aes(x=MeanGroupSize, y=DayLength_km)) + geom_point(na.rm = TRUE) + facet_wrap(~ Family) + labs(title = "Mean Group Size vs Day Range Length", y= "Group Size", x= "Time Moving")
+##these steps create two plots. One is a single plot, the other generates a set of scatter plots. In each the X axis represents the mean group size and the y axis represents the day range length. Each scatter plot contains data, where available, for individual Families.##
+pcanine_dimorph <- ggplot(data = d, aes(x=Canine_Dimorphism, y=BSD)) + geom_point(na.rm = TRUE) + labs(title = "Canine Size Dimorphism vs Body Size Dimorphism", y= "Body Size Dimorphism", x= "Canine Dimorphism")
+pcanine_dimorph_family <- ggplot(data = d, aes(x=Canine_Dimorphism, y=BSD)) + geom_point(na.rm = TRUE) + facet_wrap(~ family) + labs(title = "Canine Size Dimorphism vs Body Size Dimorphism", y= "Body Size Dimorphism", x= "Canine Dimorphism")
+##these steps create two plots. One is a single plot, the other generates a set of scatter plots. In each the X axis represents the canine size dimorphism and the y axis represents the body size dimorphism. Each scatter plot contains data, where available, for individual Families.##
+plot(ptime_day)
+plot(ptime_day_family)
+plot(psize_day)
+plot(psize_day_family)
+plot(pcanine_dimorph)
+plot(pcanine_dimorph_family)
+##Renders plots created##
+
 ```
