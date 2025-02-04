@@ -11,12 +11,15 @@ Quarto enables you to weave together content and executable code into a finished
 ## Running Code
 
 When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+##
+install.packages("tidyverse","usethis")
+##library(tidyverse)
+##library(usethis)
+## these functions load necessary packages into R for subsequent lines.
 
 ```{r}
-install.packages("tidyverse","usethis")
 library(tidyverse)
 library(usethis)
-## these functions load necessary packages into R for subsequent lines.
 f <- "https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/data-wrangling.csv"
 d <- read.csv(f, header = TRUE)
 ## this should load the dataset as an object of 213 observations with 23 variables
@@ -32,14 +35,27 @@ psize_day <- ggplot(data = d, aes(x=MeanGroupSize, y=DayLength_km)) + geom_point
 psize_day_family <- ggplot(data = d, aes(x=MeanGroupSize, y=DayLength_km)) + geom_point(na.rm = TRUE) + facet_wrap(~ Family) + labs(title = "Mean Group Size vs Day Range Length", y= "Group Size", x= "Time Moving")
 ##these steps create two plots. One is a single plot, the other generates a set of scatter plots. In each the X axis represents the mean group size and the y axis represents the day range length. Each scatter plot contains data, where available, for individual Families.##
 pcanine_dimorph <- ggplot(data = d, aes(x=Canine_Dimorphism, y=BSD)) + geom_point(na.rm = TRUE) + labs(title = "Canine Size Dimorphism vs Body Size Dimorphism", y= "Body Size Dimorphism", x= "Canine Dimorphism")
-pcanine_dimorph_family <- ggplot(data = d, aes(x=Canine_Dimorphism, y=BSD)) + geom_point(na.rm = TRUE) + facet_wrap(~ family) + labs(title = "Canine Size Dimorphism vs Body Size Dimorphism", y= "Body Size Dimorphism", x= "Canine Dimorphism")
+pcanine_dimorph_family <- ggplot(data = d, aes(x=Canine_Dimorphism, y=BSD)) + geom_point(na.rm = TRUE) + facet_wrap(~ Family) + labs(title = "Canine Size Dimorphism vs Body Size Dimorphism", y= "Body Size Dimorphism", x= "Canine Dimorphism")
 ##these steps create two plots. One is a single plot, the other generates a set of scatter plots. In each the X axis represents the canine size dimorphism and the y axis represents the body size dimorphism. Each scatter plot contains data, where available, for individual Families.##
+d <- d |>
+  mutate("diet_strategy" = case_when(Fruit >= 50 ~ "frugivore", Leaves >= 50 ~ "folivore", Fruit < 50 & Leaves < 50 ~ "omnivore", TRUE ~ NA))
+##Creates a new, modified variable "diet strategy" for which multiple conditions apply##
+pdiet <- ggplot(data = filter(d, !is.na(diet_strategy)), aes(x = diet_strategy, y = MeanGroupSize)) + geom_boxplot()
+##Creates a boxplot of diet data generated above##
 plot(ptime_day)
 plot(ptime_day_family)
 plot(psize_day)
 plot(psize_day_family)
 plot(pcanine_dimorph)
 plot(pcanine_dimorph_family)
+plot(pdiet)
 ##Renders plots created##
-
+d <- d |>
+  mutate(Binomial = paste0(Genus, " ", Species)) |>
+  select(Binomial, Family, Brain_Size_Species_Mean, Body_mass_male_mean) |>
+  group_by(Family) |>
+  summarize(meanBrainSize = mean(Brain_Size_Species_Mean, na.rm = TRUE), meanMaleBodySize = mean(Body_mass_male_mean, na.rm = TRUE)) |>
+  arrange(meanBrainSize) |>
+  print()
+##Creates a new variable representing the binomial name for an animal, trims the data frame, then groups variables by family. Finally, calculates average brain and male body size and organizes them by smallest to largest##
 ```
